@@ -41,11 +41,11 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
     private RecyclerView mRecyclerView;
 
 
-    //tag associated with the FAB menu button that sorts by name
+
     private static final String TAG_SORT_TITLE = "sortTitle";
-    //tag associated with the FAB menu button that sorts by date
+    //tag associated with the  menu button that sorts by date
     private static final String TAG_SORT_DATE = "sortDate";
-    //tag associated with the FAB menu button that sorts by ratings
+    //tag associated with the  menu button that sorts by ratings
     private static final String TAG_SORT_AUTHOR = "sortAuthor";
     private View mCoordinatorLayout;
 
