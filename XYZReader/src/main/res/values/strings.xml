@@ -8,5 +8,8 @@
     <string name="action_share">Share</string>
 
     <string name="up">Up</string>
+    <string name="action_sort_title">Sort by Title</string>
+    <string name="action_sort_date">Sort by Date</string>
+    <string name="action_sort_author">Sort by author</string>
 
 </resources>

@@ -15,9 +15,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.xyzreader.R;
@@ -25,9 +26,6 @@ import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.data.UpdaterService;
 import com.example.xyzreader.utilities.ArticleSorter;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 /**
  * An activity representing a list of Articles. This activity has different presentations for
@@ -35,8 +33,7 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
  * touched, lead to a {@link ArticleDetailActivity} representing item details. On tablets, the
  * activity presents a grid of items as cards.
  */
-public class ArticleListActivity extends AppCompatActivity implements View.OnClickListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+public class ArticleListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
     private Toolbar mToolbar;
@@ -74,82 +71,22 @@ public class ArticleListActivity extends AppCompatActivity implements View.OnCli
             refresh();
         }
 
-        //FAB code :https://github.com/oguzbilgener/CircularFloatingActionMenu
-        //ImageView for Floating Action Bar FAB
-        ImageView sortIcon = new ImageView(this);
-        sortIcon.setImageResource(R.drawable.ic_action_new);
+//FAB to reload
 
+        findViewById(R.id.sync_fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refresh();
+                Snackbar
+                        .make(mCoordinatorLayout, "Reloading data!", Snackbar.LENGTH_LONG)
+                        .setAction("OK", null)
+                     .show();
+            }
 
-        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
-                .setContentView(sortIcon)
-                .setBackgroundDrawable(R.drawable.selector_button_red)
-                .build();
-
-
-        // Create menu items
-
-        //define the icons for the sub action buttons
-        ImageView iconSortName = new ImageView(this);
-        iconSortName.setImageResource(R.drawable.ic_action_alphabets);
-        ImageView iconSortDate = new ImageView(this);
-        iconSortDate.setImageResource(R.drawable.ic_action_calendar);
-        ImageView iconSortRatings = new ImageView(this);
-        iconSortRatings.setImageResource(R.drawable.ic_action_important);
-
-        //set the background for all the sub buttons
-        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
-        itemBuilder.setBackgroundDrawable(getResources().getDrawable(R.drawable.selector_button_red));
-
-        //build the sub buttons
-        SubActionButton buttonSortName = itemBuilder.setContentView(iconSortName).build();
-        SubActionButton buttonSortDate = itemBuilder.setContentView(iconSortDate).build();
-        SubActionButton buttonSortRatings = itemBuilder.setContentView(iconSortRatings).build();
-
-
-        // Create the menu with the items:
-
-        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
-                .addSubActionView(buttonSortName)
-                .addSubActionView(buttonSortDate)
-                .addSubActionView(buttonSortRatings)
-                        // ...
-                .attachTo(actionButton)
-                .build();
-
-
-        //to determine which button was clicked, set Tags on each button
-        buttonSortName.setTag(TAG_SORT_TITLE);
-        buttonSortDate.setTag(TAG_SORT_DATE);
-        buttonSortRatings.setTag(TAG_SORT_AUTHOR);
-
-        //Buttons to listen to clicks
-        buttonSortName.setOnClickListener(this);
-        buttonSortDate.setOnClickListener(this);
-        buttonSortRatings.setOnClickListener(this);
+        });
 
     }
 
-
-    @Override
-    public void onClick(View v) {
-
-        if (v.getTag().equals(TAG_SORT_TITLE)) {
-
-
-            sortByTitle();
-
-
-        }
-        if (v.getTag().equals(TAG_SORT_DATE)) {
-
-            sortByDate();
-        }
-        if (v.getTag().equals(TAG_SORT_AUTHOR)) {
-            sortByAuthor();
-        }
-
-
-    }
 
     private void sortByTitle() {
 
@@ -204,6 +141,7 @@ public class ArticleListActivity extends AppCompatActivity implements View.OnCli
         super.onStop();
         unregisterReceiver(mRefreshingReceiver);
     }
+
 
     private boolean mIsRefreshing = false;
 
@@ -304,5 +242,40 @@ public class ArticleListActivity extends AppCompatActivity implements View.OnCli
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
         }
+    }
+
+
+    //Menu options
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+       switch (id) {
+
+           case R.id.refresh: refresh();
+               break;
+           case R.id.action_sort_title: sortByTitle();
+               break;
+
+
+        case R.id.action_sort_date: sortByDate();
+               break;
+
+
+           case R.id.action_sort_author:   sortByTitle();
+              break;
+           default:break;
+       }
+        return super.onOptionsItemSelected(item);
+
     }
 }

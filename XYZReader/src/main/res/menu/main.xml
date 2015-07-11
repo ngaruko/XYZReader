@@ -1,5 +1,28 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/refresh"
         android:title="@string/action_refresh" />
+
+
+    <item
+        android:id="@+id/action_sort_title"
+        android:orderInCategory="100"
+        android:title="@string/action_sort_title"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/action_sort_date"
+        android:orderInCategory="200"
+        android:title="@string/action_sort_date"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_sort_author"
+        android:orderInCategory="300"
+        android:title="@string/action_sort_author"
+        app:showAsAction="never" />
+
+
 </menu>
