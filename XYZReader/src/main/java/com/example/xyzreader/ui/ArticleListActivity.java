@@ -71,19 +71,6 @@ public class ArticleListActivity extends AppCompatActivity implements LoaderMana
             refresh();
         }
 
-//FAB to reload
-
-        findViewById(R.id.sync_fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                refresh();
-                Snackbar
-                        .make(mCoordinatorLayout, "Reloading data!", Snackbar.LENGTH_LONG)
-                        .setAction("OK", null)
-                     .show();
-            }
-
-        });
 
     }
 
